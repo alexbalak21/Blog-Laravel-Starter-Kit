@@ -36,6 +36,8 @@ import { LayoutGrid, Menu, FileText } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
+
+
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -47,7 +49,6 @@ const mainNavItems: NavItem[] = [
         href: "/posts",
         icon: FileText,
     },
-
 ];
 
 const rightNavItems: NavItem[] = [
@@ -141,7 +142,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </div>
 
                     <Link
-                        href={dashboard()}
+                        href="/dashboard"
                         prefetch
                         className="flex items-center space-x-2"
                     >
@@ -161,13 +162,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             href={item.href}
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
-                                                page.url ===
-                                                    (typeof item.href ===
-                                                    'string'
-                                                        ? item.href
-                                                        : item.href.url) &&
-                                                    activeItemStyles,
                                                 'h-9 cursor-pointer px-3',
+                                                // Simplified active state check
+                                                (page.url === item.href || 
+                                                 page.url === `${item.href}/` ||
+                                                 `${page.url}/` === item.href) && activeItemStyles
                                             )}
                                         >
                                             {item.icon && (
@@ -178,7 +177,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             )}
                                             {item.title}
                                         </Link>
-                                        {page.url === item.href && (
+                                        {(page.url === item.href || 
+                                          page.url === `${item.href}/` ||
+                                          `${page.url}/` === item.href) && (
                                             <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>
