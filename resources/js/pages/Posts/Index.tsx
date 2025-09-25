@@ -9,15 +9,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { Button } from '@/components/ui/button';
+import { toast } from "sonner"
+
 
 
 
 export default function Index({ posts }: { posts: Post[] }) {
     const deletePost = (id: number) => {
         if (confirm('Are you sure you want to delete this post?')) {
-            router.delete(`/posts/${id}`);
+            router.delete(`/posts/${id}`, {
+                onSuccess: () => toast.success('Post deleted successfully'),
+                onError: () => toast.error('Failed to delete post'),
+            });
         }
     };
     return (
