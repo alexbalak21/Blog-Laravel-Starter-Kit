@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
+use Inertia\Inertia;
 
 class PostController extends Controller
 {
@@ -13,7 +14,10 @@ class PostController extends Controller
      */
     public function index()
     {
-        
+        $user_posts = Post::where('user_id', auth()->id())->get();
+        return Inertia::render('Posts/Index', [
+            'posts' => $user_posts,
+        ]);
     }
 
     /**
@@ -21,7 +25,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Posts/Create');
     }
 
     /**
@@ -29,7 +33,12 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Post::create($request->validated());
+       Post::create([
+           'title' => $request->title,
+           'content' => $request->content,
+           'user_id' => auth()->id(),
+       ]);
+       return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 
     /**
@@ -37,7 +46,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        
     }
 
     /**
