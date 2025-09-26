@@ -1,0 +1,19 @@
+// Make model & migration & factory & controller & resource & seeder
+// -m: migration
+// -f: factory
+// -c: controller
+// -r: resource
+// -R: seeder
+// -p: policy
+// -M: model
+// (Explaination: make model & migration & factory & controller & resource & seeder)
+php artisan make:model Post -mfcrR
+
+php artisan route:list
+
+php artisan make:controller PostController --resource --model=Post
+
+
+php artisan optimize:clear
+
+php artisan optimize
