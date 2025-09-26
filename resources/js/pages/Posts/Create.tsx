@@ -1,40 +1,36 @@
+import { Head, useForm } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
-import { Head, useForm, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { FormEventHandler } from 'react';
 
-interface FormData {
-    title: string;
-    body: string;
-}
 
 export default function Create() {
-    const { data, setData, post, processing, errors } = useForm<FormData>({
+    
+    const { data, setData, post, processing, errors } = useForm({
         title: '',
-        body: '',
+        body: ''
     });
 
-    const handleSubmit: FormEventHandler = (e) => {
+    function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-        post(router.route('posts.store'), {
+        console.log('Form submitted');
+        post('/posts', {
             onSuccess: () => {
-                // Reset form on success
-                setData({
-                    title: '',
-                    body: ''
-                });
+                console.log('Post created successfully');
+            },
+            onError: (errors) => {
+                console.error('Error creating post:', errors);
             },
         });
-    };
+    }
 
     return (
         <AppLayout>
             <Head title="Create Post" />
             <div className="py-12">
-                <div className="max-w-2xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
                             <h1 className="text-2xl font-semibold mb-6">Create New Post</h1>

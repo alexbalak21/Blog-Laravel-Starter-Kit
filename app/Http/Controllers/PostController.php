@@ -14,6 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
+        $user_posts = Post::where('user_id', auth()->id())->get()->toArray();
         return Inertia::render('Posts/Index', [
             'posts' => Post::all(),
         ]);
@@ -32,7 +33,9 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Post::create($request->validated());
+        $validated = $request->validated();
+        $validated['user_id'] = auth()->id();
+        Post::create($validated);
         return redirect()->route('posts.index');
     }
 
