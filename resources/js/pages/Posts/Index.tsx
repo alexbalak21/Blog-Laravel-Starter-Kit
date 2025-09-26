@@ -5,8 +5,31 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Post } from '@/types';
 import { toast } from "sonner";
 import ConfirmDelete from './partials/ConfirmDelete';
+import { usePage } from '@inertiajs/react';
+import { useEffect } from 'react';
+
+declare module '@inertiajs/react' {
+  interface PageProps {
+    flash?: {
+      success?: string;
+      error?: string;
+    };
+  }
+}
+
+
 
 export default function Index({ posts }: { posts: Post[] }) {
+
+const { flash } = usePage().props as { flash?: { success?: string; error?: string } };
+
+useEffect(() => {
+    if (flash?.success) {
+        toast.success(flash.success);
+    }
+}, [flash])
+
+
     const handleDelete = (id: number) => {
         router.delete(`/posts/${id}`, {
             onSuccess: () => toast.success('Post deleted successfully'),

@@ -18,10 +18,11 @@ export default function Create() {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         post('/posts', {
+            preserveScroll: true,
+            preserveState: true,
             onSuccess: () => {
                 toast.success('Post created successfully');
                 router.visit('/posts');         
-
             },
             onError: (errors) => {
                 Object.values(errors).forEach(error => {
