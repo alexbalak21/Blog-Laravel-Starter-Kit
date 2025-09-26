@@ -5,11 +5,11 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { toast } from 'sonner';
+import { toast } from '@/components/ui/sonner';
+import { router } from '@inertiajs/react';
 
 
 export default function Create() {
-    
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         body: ''
@@ -20,12 +20,13 @@ export default function Create() {
         post('/posts', {
             onSuccess: () => {
                 toast.success('Post created successfully');
-                window.history.back();
+                router.visit('/posts');         
+
             },
             onError: (errors) => {
                 Object.values(errors).forEach(error => {
                     toast.error(error);
-                });
+                });     
             },
         });
     }
