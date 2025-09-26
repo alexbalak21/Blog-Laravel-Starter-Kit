@@ -70,6 +70,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        if ($post->user_id != auth()->id()) {
+            return redirect()->route('posts.index')->with('error', 'You are not authorized to delete this post');
+        }
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }
 }
