@@ -16,7 +16,7 @@ class PostController extends Controller
     {
         $user_posts = Post::where('user_id', auth()->id())->get()->toArray();
         return Inertia::render('Posts/Index', [
-            'posts' => Post::all(),
+            'posts' => $user_posts,
         ]);
     }
 
@@ -54,8 +54,17 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // Ensure the post belongs to the authenticated user
+        if ($post->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
+        
         return Inertia::render('Posts/Edit', [
-            'post' => $post,
+            'post' => [
+                'id' => $post->id,
+                'title' => $post->title,
+                'body' => $post->body,
+            ],
         ]);
     }
 
@@ -73,6 +82,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if ($post->user_id !== auth()->id()) {
+            abort(403, 'Unauthorized');
+        }
         $post->delete();
         return redirect()->route('posts.index');
     }
