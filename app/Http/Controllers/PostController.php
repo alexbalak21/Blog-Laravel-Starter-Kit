@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Inertia\Inertia;
@@ -39,6 +40,15 @@ class PostController extends Controller
            'user_id' => auth()->id(),
        ]);
        return redirect()->route('posts.index')->with('success', 'Post created successfully');
+    }
+
+    public function show(Post $post)
+    {
+        $post_owner_name = User::find($post->user_id)->name;
+        return Inertia::render('Posts/Show', [
+            'post' => $post,
+            'user' => ['name' => $post_owner_name],
+        ]);
     }
 
 

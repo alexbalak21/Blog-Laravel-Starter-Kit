@@ -51,15 +51,15 @@ useEffect(() => {
                 <div className="rounded-md border">
                     <Table>
                         <TableHeader>
-                            <TableRow>
+                            <TableRow className="hover:bg-transparent">
                                 <TableHead>Title</TableHead>
                                 <TableHead className="w-48 text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {posts.map((post: Post) => (
-                                <TableRow key={post.id}>
-                                    <TableCell className="font-medium">{post.title}</TableCell>
+                                <TableRow key={post.id} >
+                                    <TableCell className="font-medium cursor-pointer" onClick={() => router.visit(`/posts/${post.id}`)}>{post.title}</TableCell>
                                     <TableCell>
                                         <div className="flex justify-end gap-2">
                                             <Link href={`/posts/${post.id}/edit`}>
