@@ -41,20 +41,18 @@ class PostController extends Controller
        return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        
-    }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Post $post)
     {
-        //
+        if ($post->user_id != auth()->id()) {
+            return redirect()->route('posts.index')->with('error', 'You are not authorized to edit this post');
+        }
+        return Inertia::render('Posts/Edit', [
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -62,7 +60,16 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        if ($post->user_id != auth()->id()) {
+            return redirect()->route('posts.index')->with('error', 'You are not authorized to update this post');
+        }
+
+        $post->update([
+            'title' => $request->title,
+            'content' => $request->content,
+        ]);
+
+        return redirect()->route('posts.index')->with('success', 'Post updated successfully');
     }
 
     /**

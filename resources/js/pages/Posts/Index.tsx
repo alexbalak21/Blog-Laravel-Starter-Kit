@@ -32,7 +32,6 @@ useEffect(() => {
 
     const handleDelete = (id: number) => {
         router.delete(`/posts/${id}`, {
-            onSuccess: () => toast.success('Post deleted successfully'),
             onError: () => toast.error('Failed to delete post'),
         });
     };
