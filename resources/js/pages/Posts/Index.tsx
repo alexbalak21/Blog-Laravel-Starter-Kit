@@ -17,8 +17,6 @@ declare module '@inertiajs/react' {
   }
 }
 
-
-
 export default function Index({ posts }: { posts: Post[] }) {
 
 const { flash } = usePage().props as { flash?: { success?: string; error?: string } };
@@ -26,9 +24,18 @@ const { flash } = usePage().props as { flash?: { success?: string; error?: strin
 useEffect(() => {
     if (flash?.success) {
         toast.success(flash.success);
+        // Clear the flash message after showing it
+        router.visit(window.location.pathname, {
+            only: [], // Don't reload any props
+            preserveState: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                // This will clear the flash message from the session
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
     }
-}, [flash])
-
+}, [flash?.success])
 
     const handleDelete = (id: number) => {
         router.delete(`/posts/${id}`, {
